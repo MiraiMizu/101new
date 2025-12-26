@@ -62,6 +62,31 @@ export function setupSocketHandlers(io: Server, roomManager: RoomManager) {
             }
         });
 
+        // Add Bot
+        socket.on(EVENTS.ADD_BOT, (data: { roomId: string }) => {
+            try {
+                const game = roomManager.getRoom(data.roomId);
+                if (!game) return;
+
+                const player = game.players.find(p => p.id === socket.id);
+                if (!player?.isHost) return; // Only host can add bots
+
+                if (game.players.length >= 4) return; // Room full
+
+                const botName = `Bot ${Math.floor(Math.random() * 1000)}`;
+                const botId = `bot-${Date.now()}-${Math.random()}`;
+                const seatIndex = game.players.length;
+
+                const botPlayer = new Player(botId, botName, seatIndex, false, true); // isBot = true
+                game.addPlayer(botPlayer);
+
+                io.to(data.roomId).emit(EVENTS.ROOM_UPDATE, game.getState());
+            } catch (e) {
+                console.error('Error adding bot:', e);
+            }
+        });
+
+
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);
             // Handle disconnect

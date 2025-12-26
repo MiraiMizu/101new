@@ -33,7 +33,7 @@ export interface GameState {
   discardPiles: Record<number, Tile[]>; // specific discard pile for each player/seat? Usually just top tile is visible or previous.
 }
 
-export type GameEvent = 
+export type GameEvent =
   | 'room:update'
   | 'game:start'
   | 'turn:change'
@@ -53,4 +53,5 @@ export const EVENTS = {
   JOIN_ROOM: 'room:join',
   CREATE_ROOM: 'room:create',
   PLAYER_ACTION: 'player:action',
+  ADD_BOT: 'game:addBot',
 } as const;

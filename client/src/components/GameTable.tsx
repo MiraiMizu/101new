@@ -90,13 +90,22 @@ export const GameTable: React.FC<GameTableProps> = ({ initialState, myId }) => {
 
             {/* Host Controls */}
             {gameState.status === 'waiting' && gameState.players.find(p => p.id === myId)?.isHost && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-24">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-24 flex flex-col gap-2 items-center">
                     <button
                         onClick={handleStart}
                         className="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-8 rounded shadow-lg animate-pulse"
                     >
                         START GAME
                     </button>
+
+                    {gameState.players.length < 4 && (
+                        <button
+                            onClick={() => socketService.socket?.emit(EVENTS.ADD_BOT, { roomId: gameState.roomId })}
+                            className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded shadow-lg text-sm"
+                        >
+                            ADD BOT (+1)
+                        </button>
+                    )}
                 </div>
             )}
 
