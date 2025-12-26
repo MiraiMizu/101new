@@ -1,0 +1,25 @@
+services:
+  # The Backend Service
+  - type: web
+    name: 101okey-server
+    env: node
+    plan: free
+    buildCommand: cd shared && npm install && npm run build && cd ../server && npm install && npm run build
+    startCommand: cd server && npm start
+    envVars:
+      - key: PORT
+        value: 10000
+    autoDeploy: true
+
+  # The Frontend Service (Optional, Cloudflare is fine too, but this keeps them together if desired)
+  # - type: web
+  #   name: 101okey-client
+  #   env: static
+  #   buildCommand: cd shared && npm install && npm run build && cd ../client && npm install && npm run build
+  #   staticPublishPath: ./client/dist
+  #   envVars:
+  #     - key: VITE_API_URL
+  #       fromService:
+  #         type: web
+  #         name: 101okey-server
+  #         property: url

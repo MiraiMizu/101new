@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { EVENTS } from '@101okey/shared'; // We need to make sure vite can resolve this
 
-const SOCKET_URL = 'http://localhost:3001'; // TODO: env variable
+const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 class SocketService {
     public socket: Socket | null = null;
